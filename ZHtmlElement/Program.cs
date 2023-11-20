@@ -7,6 +7,7 @@ using System.Linq;
 using System.Net.Sockets;
 using System.Resources;
 using System.Text;
+using System.Threading;
 using ZennoLab.CommandCenter;
 using ZennoLab.Emulation;
 using ZennoLab.InterfacesLibrary.ProjectModel;
@@ -27,9 +28,20 @@ namespace ZHtmlElement
         /// <returns>Код выполнения скрипта</returns>		
         public int Execute(Instance instance, IZennoPosterProjectModel project)
         {
-            int executionResult = 0;
+            var tab = instance.ActiveTab;
+            var site = new SiteHandler(tab);
 
-            return executionResult;
+            //site.ParseElements();
+            site.ParseElements_v2();
+
+            while (site.SiteData.LstText.Count == 0)
+            {
+                Thread.Sleep(1000);
+            }
+
+            var result = site.SiteData.LstText;
+
+            return 0;
         }
     }
 }
